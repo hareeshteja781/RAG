@@ -4,19 +4,23 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
 from app.schemas.user import LoginRequest, TokenResponse
-from app.utils.security import verify_password, create_access_token, get_current_user
+from app.utils.security import (
+    verify_password,
+    create_access_token,
+    get_current_user,
+)
 
 
 router = APIRouter(
     prefix="/auth",
-    tags=["Authentication"]
+    tags=["Authentication"],
 )
 
 
 @router.post("/login", response_model=TokenResponse)
 def login(
     login_data: LoginRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     user = (
         db.query(User)
@@ -24,35 +28,40 @@ def login(
         .first()
     )
 
-    if not user:
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+            detail="Invalid email or password",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
-    password_valid = verify_password(
+    if not verify_password(
         login_data.password,
-        user.password_hash
-    )
-
-    if not password_valid:
+        user.password_hash,
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+            detail="Invalid email or password",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
     access_token = create_access_token(
         data={
-            "sub": str(user.id)
+            "sub": str(user.id),
         }
     )
 
     return {
         "access_token": access_token,
-        "token_type": "bearer"
+        "token_type": "bearer",
     }
 
 
 @router.get("/me")
-def read_current_user(current_user: User = Depends(get_current_user)):
-    return {"id": current_user.id, "email": current_user.email}
+def read_current_user(
+    current_user: User = Depends(get_current_user),
+):
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+    }

@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Enterprise RAG | Knowledge Workspace</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- AUTH SCREEN -->
+  <section id="auth-screen" class="auth-screen">
+    <div class="auth-shell">
+      <div class="auth-brand">
+        <div class="brand-mark large">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h8A5.5 5.5 0 0 1 20 8.5v7A5.5 5.5 0 0 1 14.5 21h-5A5.5 5.5 0 0 1 4 15.5z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M8 8h8M8 12h5M8 16h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="eyebrow">ENTERPRISE AI WORKSPACE</div>
+          <h1>Enterprise <span>RAG</span></h1>
+          <p>Upload your knowledge, search it semantically, and get grounded answers with source context.</p>
+        </div>
+      </div>
+
+      <div class="auth-card glass-card">
+        <div class="auth-card-head">
+          <div>
+            <div class="section-kicker">SECURE ACCESS</div>
+            <h2>Welcome back</h2>
+            <p>Sign in to your document intelligence workspace.</p>
+          </div>
+          <div class="live-dot"><span></span> API online</div>
+        </div>
+
+        <div class="auth-tabs" role="tablist">
+          <button id="tab-login" class="auth-tab active" type="button">Login</button>
+          <button id="tab-register" class="auth-tab" type="button">Create account</button>
+        </div>
+
+        <div id="login-panel" class="auth-panel">
+          <label class="field-label" for="log-email">Email</label>
+          <div class="input-shell">
+            <span class="input-icon">@</span>
+            <input id="log-email" type="email" autocomplete="email" placeholder="you@company.com" />
+          </div>
+
+          <label class="field-label" for="log-pass">Password</label>
+          <div class="input-shell">
+            <span class="input-icon">••</span>
+            <input id="log-pass" type="password" autocomplete="current-password" placeholder="Enter your password" />
+            <button class="password-toggle" data-target="log-pass" type="button" aria-label="Show password">Show</button>
+          </div>
+
+          <button id="btn-login" class="primary-btn full-width" type="button">
+            <span>Sign in</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <p class="auth-footnote">Your session uses JWT-based authentication.</p>
+        </div>
+
+        <div id="register-panel" class="auth-panel hidden">
+          <label class="field-label" for="reg-email">Email</label>
+          <div class="input-shell">
+            <span class="input-icon">@</span>
+            <input id="reg-email" type="email" autocomplete="email" placeholder="you@company.com" />
+          </div>
+
+          <label class="field-label" for="reg-pass">Password</label>
+          <div class="input-shell">
+            <span class="input-icon">••</span>
+            <input id="reg-pass" type="password" autocomplete="new-password" placeholder="Create a password" />
+            <button class="password-toggle" data-target="reg-pass" type="button" aria-label="Show password">Show</button>
+          </div>
+
+          <button id="btn-register" class="primary-btn full-width" type="button">
+            <span>Create account</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <p class="auth-footnote">Your account is stored securely in PostgreSQL.</p>
+        </div>
+      </div>
+
+      <div class="auth-metrics">
+        <div><strong>JWT</strong><span>Authentication</span></div>
+        <div><strong>Gemini</strong><span>Embeddings + answers</span></div>
+        <div><strong>PostgreSQL</strong><span>Document storage</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <div id="app-shell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="brand-row">
+          <div class="brand-mark">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h8A5.5 5.5 0 0 1 20 8.5v7A5.5 5.5 0 0 1 14.5 21h-5A5.5 5.5 0 0 1 4 15.5z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M8 8h8M8 12h5M8 16h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Enterprise RAG</strong>
+            <span>Knowledge workspace</span>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="nav-item active" href="#workspace"><span class="nav-dot"></span>Workspace</a>
+          <a class="nav-item" href="#documents"><span class="nav-dot"></span>Documents</a>
+          <a class="nav-item" href="#query"><span class="nav-dot"></span>Ask RAG</a>
+          <a class="nav-item" href="#conversations"><span class="nav-dot"></span>Conversations</a>
+        </nav>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="profile-card">
+          <div class="avatar" id="avatar-initial">U</div>
+          <div class="profile-copy">
+            <strong id="sidebar-user">User</strong>
+            <span>Authenticated</span>
+          </div>
+          <button id="btn-logout" class="icon-btn" type="button" title="Log out" aria-label="Log out">↗</button>
+        </div>
+      </div>
+    </aside>
+
+    <main id="workspace" class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="section-kicker">DOCUMENT INTELLIGENCE</div>
+          <h1>Knowledge workspace</h1>
+          <p>Upload documents, process them into searchable knowledge, and ask grounded questions.</p>
+        </div>
+        <div class="topbar-status">
+          <span class="status-pulse"></span>
+          <span>FastAPI connected</span>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card glass-card">
+          <div class="stat-icon purple">D</div>
+          <div><span class="stat-label">Documents</span><strong id="stat-documents">0</strong></div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon cyan">Q</div>
+          <div><span class="stat-label">Questions</span><strong id="stat-questions">0</strong></div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon green">C</div>
+          <div><span class="stat-label">Conversations</span><strong id="stat-conversations">0</strong></div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon amber">AI</div>
+          <div><span class="stat-label">AI Engine</span><strong>Gemini</strong></div>
+        </div>
+      </section>
+
+      <section id="documents" class="workspace-grid">
+        <article class="panel glass-card upload-panel">
+          <div class="panel-head">
+            <div>
+              <div class="section-kicker">KNOWLEDGE INGESTION</div>
+              <h2>Add a document</h2>
+              <p>Upload a TXT, PDF, or DOCX file to your private workspace.</p>
+            </div>
+            <div class="mini-badge">Secure upload</div>
+          </div>
+
+          <label id="drop-zone" class="drop-zone" for="file-input">
+            <input id="file-input" type="file" accept=".txt,.pdf,.docx" />
+            <div class="drop-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 16V4m0 0L8 8m4-4 4 4M5 12.5v4A2.5 2.5 0 0 0 7.5 19h9a2.5 2.5 0 0 0 2.5-2.5v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <strong id="file-name">Drop a file here</strong>
+            <span>or click to browse from your computer</span>
+            <small id="file-meta">TXT · PDF · DOCX</small>
+          </label>
+
+          <div class="upload-actions">
+            <button id="btn-upload" class="primary-btn" type="button">Upload document <span>→</span></button>
+            <span id="upload-hint" class="helper-text">Documents are private to your account.</span>
+          </div>
+        </article>
+
+        <article class="panel glass-card documents-panel">
+          <div class="panel-head compact">
+            <div>
+              <div class="section-kicker">LIBRARY</div>
+              <h2>Your documents</h2>
+            </div>
+            <span id="document-count-chip" class="count-chip">0</span>
+          </div>
+          <div id="doc-list" class="document-list empty-state">
+            <div class="empty-icon">✦</div>
+            <strong>No documents yet</strong>
+            <span>Upload a document to start building your knowledge base.</span>
+          </div>
+        </article>
+      </section>
+
+      <section id="query" class="query-panel glass-card">
+        <div class="query-copy">
+          <div class="section-kicker">ASK YOUR KNOWLEDGE BASE</div>
+          <h2>What do you want to know?</h2>
+          <p>Answers are generated from the processed documents linked to your account.</p>
+        </div>
+
+        <div class="query-box">
+          <textarea id="question" rows="2" placeholder="e.g. What technology is used for authentication?"></textarea>
+          <button id="btn-query" class="primary-btn query-btn" type="button">Ask RAG <span>↗</span></button>
+        </div>
+
+        <div id="answer-card" class="answer-card hidden">
+          <div class="answer-head">
+            <div class="answer-title"><span class="ai-badge">AI</span> Answer</div>
+            <span id="answer-status" class="mini-badge">Grounded response</span>
+          </div>
+          <div id="answer" class="answer-body"></div>
+          <div id="source-list" class="source-list"></div>
+        </div>
+      </section>
+
+      <section id="conversations" class="panel glass-card conversations-panel">
+        <div class="panel-head compact">
+          <div>
+            <div class="section-kicker">HISTORY</div>
+            <h2>Conversations</h2>
+          </div>
+          <button id="btn-new-conv" class="secondary-btn" type="button">+ New conversation</button>
+        </div>
+        <div id="conv-list" class="conversation-list empty-state">
+          <div class="empty-icon">◌</div>
+          <strong>No conversations yet</strong>
+          <span>Start a conversation to keep your Q&A history organized.</span>
+        </div>
+      </section>
+
+      <footer class="footer-note">
+        <span>Enterprise RAG</span>
+        <span>FastAPI · PostgreSQL · Gemini · JWT</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

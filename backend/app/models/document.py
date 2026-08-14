@@ -15,6 +15,9 @@ class Document(Base):
     file_path = Column(String, nullable=False)
     file_type = Column(String, nullable=True)
     file_size = Column(BigInteger, nullable=True)
+    extracted_text = Column(String, nullable=True)
+    processed_at = Column(DateTime, nullable=True)
+    processing_status = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     owner = relationship("User", back_populates="documents")
