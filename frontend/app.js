@@ -1,4 +1,4 @@
-const API_BASE = window.API_BASE || 'http://127.0.0.1:8000/';
+const API_BASE = 'https://enterprise-rag-backend-zqob.onrender.com/';
 
 const state = {
   documents: [],
