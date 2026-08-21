@@ -3,8 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.database import get_db
+from app.database import Base, engine, get_db
+
+# Import all models so SQLAlchemy registers all tables
 from app.models.user import User
+from app.models.document import Document
+from app.models.document_chunk import DocumentChunk
+from app.models.conversation import Conversation
+from app.models.message import Message
+
 from app.schemas.user import UserCreate
 from app.utils.security import hash_password
 
@@ -16,9 +23,15 @@ from app.routes.conversations import router as conversations_router
 
 app = FastAPI()
 
+# Create database tables automatically
+Base.metadata.create_all(bind=engine)
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://enterprise-rag-frontend-teal.vercel.app"],
+    allow_origins=[
+        "https://enterprise-rag-frontend-teal.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
