@@ -3,7 +3,6 @@ uvicorn==0.41.0
 SQLAlchemy==2.0.52
 psycopg2-binary==2.9.10
 python-dotenv==1.0.1
-passlib[bcrypt]==1.7.4
 bcrypt==4.3.0
 python-jose==3.5.0
 python-multipart==0.0.20
